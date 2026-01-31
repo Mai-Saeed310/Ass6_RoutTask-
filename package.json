@@ -13,7 +13,6 @@
   "description": "",
   "dependencies": {
     "express": "^5.2.1",
-    "mysql2": "^3.16.1",
-    "sequelize": "^6.37.7"
+    "mongodb": "^7.0.0"
   }
 }

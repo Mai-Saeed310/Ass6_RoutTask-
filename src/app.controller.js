@@ -1,9 +1,9 @@
 import express from "express";
-import { checkConncetionDB, checkSyncDB } from "./DB/connectionDB.js";
-import { userRouter } from "./modules/users/user.controller.js";
-import { postRouter } from "./modules/posts/post.controller.js";
-import { CommentRouter } from "./modules/comments/comment.controller.js";
-import "./models/models.associations.js";
+import { checkConncetionDB } from "./DB/connectionDB.js";
+import { bookRouter, createCollection } from "./modules/books/book.controller.js";
+import { autherRouter } from "./modules/authers/auther.controller.js";
+import { insetLogs, logRouter } from "./modules/logs/log.controller.js";
+
 
 const app = express(); 
 const port = 3000 ; 
@@ -11,11 +11,15 @@ const port = 3000 ;
 
 const bootstrap = () => { 
     checkConncetionDB(); 
-    checkSyncDB();
+
     app.use(express.json());
-    app.use("/users",userRouter);
-    app.use("/posts",postRouter);
-    app.use("/comments",CommentRouter);
+    app.use("/collection/books",createCollection);
+    app.use("/collection/authors",autherRouter);
+    app.use("/collection/logs/capped",logRouter);
+    app.use("/books",bookRouter);
+    app.use("/logs",insetLogs);
+
+    
 
     app.get("/", (req,res)=>{
     res.status(200).send("Let's start our Ass7 ");

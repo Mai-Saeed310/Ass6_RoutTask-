@@ -1,0 +1,132 @@
+Q1: 
+db.createCollection("books", {
+  validator: {
+    title: { $exists: true, $ne: "" }
+  }
+})
+Or:
+db.createCollection("books", { validator: { title: { $exists: true, $ne: "" } } })
+
+
+Q2:
+db.authors.insertOne({ 
+  name: "author1",
+  nationality: "British"
+})
+
+Q3:
+db.createCollection("logs", {
+  capped: true,
+  size: 1048576
+})
+
+Q4:
+db.books.createIndex({title:1})
+
+Q5:
+db.books.insertOne({
+  title: "Book1",
+  author: "Ali",
+  years: 1937,
+  genres: ["Fantasy", "Adventure"]
+})
+
+Q6:
+db.books.insertMany([
+  {
+    title: "The Hobbit",
+    author: "J.R.R. Tolkien",
+    years: 1937,
+    genres: ["Fantasy", "Adventure"]
+  },
+  {
+    title: "Future",
+    author: "George Orwell",
+    years: 1949,
+    genres: ["Science Fiction"]
+  },
+  {
+    title: "To Kill a Mockingbird",
+    author: "Harper Lee",
+    years: 1960,
+    genres: ["Classic", "Fiction"]
+  }
+])
+
+Q:7
+db.logs.insertOne({
+  book_id: "697a65bcb529487371be7a44",
+  action: "borrowed"}
+)
+
+Q8:
+db.books.updateOne(
+  { title: "Future" },
+  { $set: { years: 2022 } }
+)
+
+Q9:
+db.books.find({ title: "Brave New World" })
+
+Q10:
+db.books.find({
+  years: { $gte: 1990, $lte: 2010 }
+})
+
+Q11:
+db.books.find({
+  genres: { $in: ["Science Fiction"] }
+})
+
+Q12:
+db.books.aggregate([
+  { $sort: { years: -1 } },
+  { $skip: 2 },
+  { $limit: 3 }
+])
+
+Q13:
+db.books.find({
+  years: { $type: "int" }
+})
+
+Q14:
+db.books.find({
+  genres: { $nin: ["Horror", "Science Fiction"] }
+})
+
+Q15:
+db.books.deleteMany({
+  years: { $lt: 2000 }
+})
+
+Q16:
+db.books.aggregate([
+  { $match: { years: { $gt: 2000 } } },
+  { $sort: { years: -1 } }
+])
+
+Q17:
+db.books.aggregate([
+  { $match: { years: { $gt: 2000 } } }, 
+  { $project: { _id: 0, title: 1, author: 1, years: 1 } }
+])
+
+Q18:
+db.books.aggregate([
+  { $unwind: "$genres" }
+])
+
+Q19:
+db.books.aggregate([
+  {
+    $lookup: {
+      from: "logs",          
+      localField: "_id",  
+      foreignField: "book_id",
+      as: "logs"
+    }
+  }
+])
+
+

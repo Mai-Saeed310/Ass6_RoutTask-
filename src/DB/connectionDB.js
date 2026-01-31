@@ -1,35 +1,24 @@
-
-import { Sequelize } from "sequelize";
+import { MongoClient } from "mongodb";
 
 // Create Connection 
- export const sequelize = new Sequelize  ("ass7_sequaliize","root","root",{
-    dialect: "mysql",
-    host: "localhost"
-}); 
+const uri = "mongodb://localhost:27017";
+const client = new MongoClient(uri);
 
-// Test Connection
+// Create DB 
+// Database Name
+const dbName = "myAss7";
+export let db;
+
 export const checkConncetionDB = async () => {
+  try {
+    // Test Connection
+    await client.connect();
+    console.log("Connection has been established successfully.");
 
-try {
-  await sequelize.authenticate();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Unable to connect to the database:', error);
-}
-
+    db = client.db(dbName);
+  } catch (error) {
+    console.error("Unable to connect to the server:", error);
+  }
 };
-
-// synchronization
-export const checkSyncDB = async () => {
-
-try {
-  await sequelize.sync({alter:false, force:false});
-console.log('All models were synchronized successfully.');
-} catch (error) {
-  console.error('Unable to synchronize the database:', error);
-}
-
-};
-
 
 
